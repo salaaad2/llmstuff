@@ -25,13 +25,11 @@ model = OpenAILike(
 
 Settings.llm = model
 
-documents = SimpleDirectoryReader("./data").load_data()
-print(documents)
+documents = SimpleDirectoryReader("./repo").load_data()
 index = SummaryIndex.from_documents(documents)
-print(index)
 
 
 # Query and print response
 query_engine = index.as_query_engine()
-response = query_engine.query("<query_text>")
+response = query_engine.query("How is the average time calculated ? In which function called where ?")
 print(response)
