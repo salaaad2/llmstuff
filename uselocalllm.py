@@ -13,6 +13,7 @@ from llama_index.core.llms.callbacks import llm_completion_callback
 #from llama_index.core.llms import ChatMessage
 from llama_index.llms.openai_like import OpenAILike
 from llama_index.core.llms import ChatMessage
+from llama_index.core import Settings
 
 model = OpenAILike(
     api_key="localai_fake",
@@ -22,5 +23,15 @@ model = OpenAILike(
     is_chat_model=True,
     timeout=60)
 
-response = model.chat(messages=[ChatMessage(content="how r u?")])
+Settings.llm = model
+
+documents = SimpleDirectoryReader("./data").load_data()
+print(documents)
+index = SummaryIndex.from_documents(documents)
+print(index)
+
+
+# Query and print response
+query_engine = index.as_query_engine()
+response = query_engine.query("<query_text>")
 print(response)
